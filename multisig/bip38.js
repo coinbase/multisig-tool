@@ -6461,7 +6461,7 @@ Bip38.prototype.encrypt = function(wif, passphrase, saltAddress) {
 
 //some of the techniques borrowed from: https://github.com/pointbiz/bitaddress.org
 //todo: (optimization) init buffer in advance, and use copy instead of concat
-Bip38.prototype.decryptRaw = function(encData, passphrase) {
+Bip38.prototype.decryptRaw = function(encData, passphrase, progressCallback) {
   // 39 bytes: 2 bytes prefix, 37 bytes payload
   assert.equal(encData.length, 39, 'Invalid BIP38 data length')
 
@@ -6489,7 +6489,7 @@ Bip38.prototype.decryptRaw = function(encData, passphrase) {
   var p = this.scryptParams.p
 
   var addresshash = encData.slice(3, 7)
-  var scryptBuf = scrypt(passphrase, addresshash, N, r, p, 64)
+  var scryptBuf = scrypt(passphrase, addresshash, N, r, p, 64, progressCallback)
   var derivedHalf1 = scryptBuf.slice(0, 32)
   var derivedHalf2 = scryptBuf.slice(32, 64)
 
@@ -6511,9 +6511,9 @@ Bip38.prototype.decryptRaw = function(encData, passphrase) {
   }
 }
 
-Bip38.prototype.decrypt = function(encryptedBase58, passphrase) {
+Bip38.prototype.decrypt = function(encryptedBase58, passphrase, progressCallback) {
   var encBuffer = cs.decode(encryptedBase58)
-  var decrypt = this.decryptRaw(encBuffer, passphrase)
+  var decrypt = this.decryptRaw(encBuffer, passphrase, progressCallback)
 
   // Convert to WIF
   var bufferLen = decrypt.compressed ? 34 : 33
@@ -6647,3 +6647,28 @@ module.exports = Bip38
 }).call(this,require("buffer").Buffer)
 },{"aes":1,"assert":29,"bigi":4,"buffer":33,"coinstring":6,"crypto":18,"ecurve":10,"scryptsy":13}]},{},[])("bip38")
 });
+
+self.addEventListener('message', function(e) {
+  var data = e.data;
+  var bip38 = new Bip38();
+
+  switch (data.cmd) {
+    case 'encrypt':
+      self.postMessage({cmd: 'encrypt', status: 'started'});
+      cipher = bip38.encrypt(data.wif, data.password, data.address, function(status) {
+        self.postMessage({cmd: 'encrypt', status: 'working', percent: status.percent});
+      });
+      self.postMessage({cmd: 'encrypt', status: 'done', result: cipher});
+      break;
+    case 'decrypt':
+      self.postMessage({cmd: 'decrypt', status: 'started'});
+      string = bip38.decrypt(data.cipher, data.password, function(status) {
+        self.postMessage({cmd: 'decrypt', status: 'working', percent: status.percent});
+      });
+      self.postMessage({cmd: 'decrypt', status: 'done', result: string});
+      break;
+    default:
+      self.postMessage('Unknown command: ' + data.msg);
+  };
+  self.close();
+}, false);
