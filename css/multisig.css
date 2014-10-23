@@ -69,7 +69,10 @@ textarea, input[type="text"], input[type="number"], input[type="password"] {
   border-bottom: 2px solid #ccc;
 }
 #transaction tfoot th {
-  border-top: 2px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+#transaction .unspent th {
+  border-top-width: 2px;
 }
 #transaction tr.empty td {
   color: #ccc;
@@ -82,14 +85,17 @@ textarea, input[type="text"], input[type="number"], input[type="password"] {
 .max_index input {
   width: 50px;
 }
-.destination_address {
+.destination_address, .fees {
   clear: both;
   padding-top: 15px;
 }
-.destination_address input {
+.destination_address input, .fees input {
   display: block;
   width: 300px;
   margin-top: 10px;
+}
+.fees input {
+  width: 100px;
 }
 .seed {
   width: 48%;
