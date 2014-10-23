@@ -28,7 +28,7 @@ We used this command to build the `bitcoinjs-lib`:
 
     `npm install bitcoinjs-lib --save`
 
-2. Use `browserify to resolve dependencies:
+2. Use `browserify` to resolve dependencies:
 
     `browserify -r bitcoinjs-lib -r buffer > lib/bitcoinjs.js`
 
@@ -38,7 +38,7 @@ We use the BIP38 library to decrypt the encrypted shared key seeds.
 
     `npm install bip38 crypto-browserify --save`
 
-2. Use `browserify to resolve dependencies:
+2. Use `browserify` to resolve dependencies:
 
     `browserify -r bip38 -s Bip38 > multisig/bip38.js`
 
