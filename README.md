@@ -42,7 +42,7 @@ We use the BIP38 library to decrypt the encrypted shared key seeds.
 
     `browserify -r bip38 -s Bip38 > multisig/bip38.js`
 
-Then we ammend the BIP38 library with progress callbacks and Web Worker messages handling.
+Then we [ammend](https://github.com/coinbase/multisig-tool/commit/f8bbcb87ec50dc9414ca10e18c9fc0a8f4737322) the BIP38 library with progress callbacks and Web Worker messages handling.
 
 ## Offline use
 
