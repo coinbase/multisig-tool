@@ -1,0 +1,122 @@
+body {
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+#steps, #transaction {
+  width: 49%;
+}
+#steps {
+  float: left;
+}
+#transaction {
+  float: right;
+  margin: 15px 0;
+}
+
+header {
+  border-bottom: 2px solid #ccc;
+}
+
+textarea, input[type="text"], input[type="number"], input[type="password"] {
+  padding: 5px;
+  background: #fff;
+  border: 1px solid #ccc;
+}
+.key {
+  font-family: monospace;
+}
+
+.step {
+  background: #efefef;
+  border-radius: 5px;
+  padding: 15px;
+  margin: 15px 0;
+}
+.step header {
+  margin-bottom: 15px;
+}
+.step header p {
+  margin-top: 0;
+}
+.step h2 {
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+.step footer {
+  padding-top: 15px;
+  height: 35px;
+  clear: both;
+}
+.step footer button {
+  background: #005ca5;
+  border: 0;
+  color: #fff;
+  border-radius: 5px;
+  padding: 10px 20px;
+  float: right;
+}
+
+#transaction table {
+  text-align: left;
+  border-spacing: 0;
+  border-collapse: collapse;
+  width: 100%;
+}
+#transaction table th, #transaction table td {
+  padding: 5px;
+}
+#transaction thead th {
+  border-bottom: 2px solid #ccc;
+}
+#transaction tfoot th {
+  border-top: 2px solid #ccc;
+}
+#transaction tr.empty td {
+  color: #ccc;
+}
+
+.xpubkeys textarea {
+  width: 31%;
+  height: 60px;
+}
+.max_index input {
+  width: 50px;
+}
+.destination_address {
+  clear: both;
+  padding-top: 15px;
+}
+.destination_address input {
+  display: block;
+  width: 300px;
+  margin-top: 10px;
+}
+.seed {
+  width: 48%;
+}
+.seed label {
+  display: block;
+  margin-bottom: 10px;
+}
+.seed textarea, .seed input {
+  width: 97%;
+}
+.seed textarea {
+  height: 50px;
+}
+.seed .decrypt_progress {
+  float: right;
+}
+.seed.shared {
+  float: left;
+}
+.seed.shared small {
+  display: none;
+}
+.seed.user {
+  float: right;
+}
+.raw code {
+  word-wrap: break-word;
+  font-size: 10px;
+}

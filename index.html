@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Coinbase Vault recovery tool</title>
+    <link rel="stylesheet" href="css/multisig.css">
+
+    <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="lib/bitcoinjs.js"></script>
+    <script type="text/javascript" src="multisig/multisig.js"></script>
+    <script type="text/javascript">
+      "use strict";
+
+      $(function() {
+        var proceed = function(button, next_step_id) {
+          $(button).parents('footer').hide();
+          $(next_step_id).show();
+        }
+
+        // Hide all the steps, then only show step 1.
+        $('.step').hide();
+        $('#step_1').show();
+
+        $('.step button').on('click', function() {
+          $(this).attr('disabled', true).text('Please wait ...')
+        });
+
+        // Step 1, collect the xpubkeys, construct child addresses and fetch their unspent outputs.
+        $('#step_1 button').on('click', function() {
+          var lastAddressIndex = $('.max_index input').val();
+          var xpubkeys = $('.xpubkey').map(function(i, xpub) { return $(xpub).val(); }).toArray();
+
+          // Make an address view.
+          var addressView = new Multisig.AddressView({
+            container: '#transaction'
+          });
+
+          var button = this;
+          Multisig.app = new Multisig.App({
+            xpubkeys: xpubkeys,
+            lastAddressIndex: parseInt(lastAddressIndex),
+            onReady: function() {
+              addressView.render(this); // When multisig ready, render the address view.
+              proceed(button, '#step_2');
+            }
+          });
+        })
+
+        // Step 2, collect the shared and user key, decrypt shared key, build transaction and sign it.
+        $('#step_2 button').on('click', function() {
+          var button = this;
+          var percent = 0;
+
+          Multisig.app.buildTransaction({
+            destinationAddress: $('.destination_address input').val(),
+            seeds: {
+              shared: $('.shared .key').val(),
+              shared_password: $('.shared .password').val(),
+              user: $('.user .key').val()
+            },
+            // BIP38 decryption progress method.
+            onProgress: function(percent) {
+              var cur_percent = Math.ceil(percent);
+              if (cur_percent == percent) return;
+              if (cur_percent > 0) $('.decrypt_progress').show();
+              else if (cur_percent == 100) $('.decrypt_progress').hide();
+              percent = cur_percent;
+              $('#decrypt_percent').text(percent);
+            },
+            onReady: function() {
+              $('.raw code').text(Multisig.app.tx.transaction.toHex());
+              proceed(button, '#step_3');
+            }
+          })
+        })
+      })
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>Coinbase Vault recovery tool</h1>
+    </header>
+    <div id="steps">
+      <div id="step_1" class="step">
+        <header>
+          <h2>Step 1</h2>
+          <p>Let's find all of your vault addresses that have some bitcoins in them.</p>
+        </header>
+        <div class="xpubkeys">
+          <p>Please enter the extended public keys (xpubkeys) for your multisig vault.</p>
+          <textarea class="xpubkey key" placeholder="xpub..."></textarea>
+          <textarea class="xpubkey key" placeholder="xpub..."></textarea>
+          <textarea class="xpubkey key" placeholder="xpub..."></textarea>
+        </div>
+        <div class="max_index">
+          <p>Please enter the highest HD index to check for balance.</p>
+          <input type="number" placeholder="index" value="10">
+        </div>
+        <footer>
+          <button>Continue</button>
+        </footer>
+      </div>
+
+      <div id="step_2" class="step">
+        <header>
+          <h2>Step 2</h2>
+          <p>
+            Now enter the key backups that you saved when creating the vault.
+            <br>
+            <small>Protip: you can now safely go offline if you'd like.</small>
+          </p>
+        </header>
+        <div class="seed shared">
+          <label>
+            Shared key
+            <small class="decrypt_progress">Decrypting ... <strong><span id="decrypt_percent">0</span>%</strong></small>
+          </label>
+          <textarea class="key"></textarea>
+          <input type="password" class="password" placeholder="Enter your vault password">
+        </div>
+        <div class="seed user">
+          <label>User key</label>
+          <textarea class="key"></textarea>
+        </div>
+        <div class="destination_address">
+          <label>And decide where you want the bitcoins to be sent to</label>
+          <input type="text" class="key" placeholder="Enter a bitcoin address">
+        </div>
+        <footer>
+          <button>Continue</button>
+        </footer>
+      </div>
+
+      <div id="step_3" class="step">
+        <header>
+          <h2>Step 3</h2>
+          <p>Now you can copy the raw transaction and paste it into any bitcoin client to be broadcast to the network.</p>
+        </header>
+        <div class="raw">
+          <pre><code>
+            Your transaction will appear here in raw hex format ...
+          </code></pre>
+        </div>
+      </div>
+    </div>
+    <div id="transaction">
+      <table>
+        <thead>
+          <tr>
+            <th>Node path</th>
+            <th>Address</th>
+            <th>Balance</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr>
+            <th colspan="2">Total</th>
+            <th><span class="balance_btc">0.00000000</span> BTC</th>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+  </body>
+</html>
