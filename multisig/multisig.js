@@ -190,17 +190,18 @@
       window.crypto.getRandomValues(hash);
 
       $.each(this.inputAddresses, function(address_index, address) {
-        $.each(that.hdWallets, function(hd_index, hd) {
-          // Get the private key for this address.
-          var prvkey = address.getPrvKey(hd);
+        // The signatures need to be in the same order as the
+        // public keys were when creating the P2SH address.
+        $.each(address.pubkeys, function(pubkey_index, pubkey) {
+          $.each(that.hdWallets, function(hd_index, hd) {
+            // Get the private key for this address.
+            var prvkey = address.getPrvKey(hd);
 
-          // Sign the random hash.
-          var sig = prvkey.sign(hash);
-
-          // The signatures need to be in the same order as the
-          // public keys were when creating the P2SH address.
-          $.each(address.pubkeys, function(pubkey_index, pubkey) {
+            // Sign the random hash to see if the current private key corresponds to the current public key.
+            var sig = prvkey.sign(hash);
             if (!pubkey.verify(hash, sig)) return;
+
+            // If it does, to the actual signing.
             that.tb.sign(address_index, prvkey, address.redeemScript);
           })
         })
@@ -211,8 +212,6 @@
   /***
   Main app */
   Multisig.App = function(options) {
-    console.log('Initializing ...');
-
     // Settings.
     this.xpubkeys = options.xpubkeys;
     this.lastAddressIndex = options.lastAddressIndex;
