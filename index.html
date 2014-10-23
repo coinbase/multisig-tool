@@ -43,6 +43,9 @@
               proceed(button, '#step_2');
             }
           });
+
+          // Set the default fees.
+          $('.miner_fee').val(Multisig.app.getMinimumFee());
         })
 
         // Step 2, collect the shared and user key, decrypt shared key, build transaction and sign it.
@@ -51,6 +54,7 @@
           var percent = 0;
 
           Multisig.app.buildTransaction({
+            minerFee: $('.miner_fee').val(),
             destinationAddress: $('.destination_address input').val(),
             seeds: {
               shared: $('.shared .key').val(),
@@ -67,6 +71,8 @@
               $('#decrypt_percent').text(percent);
             },
             onReady: function() {
+              $('.fees_btc').text(Multisig.app.tx.getMinerFee());
+              $('.total_btc').text(Multisig.app.tx.getDestinationAmount());
               $('.raw code').text(Multisig.app.tx.transaction.toHex());
               proceed(button, '#step_3');
             }
@@ -125,6 +131,10 @@
           <label>And decide where you want the bitcoins to be sent to</label>
           <input type="text" class="key" placeholder="Enter a bitcoin address">
         </div>
+        <div class="fees">
+          <label>What would you like the fee to be</label>
+          <input type="text" class="miner_fee" placeholder="Enter miner fees">
+        </div>
         <footer>
           <button>Continue</button>
         </footer>
@@ -153,9 +163,17 @@
         </thead>
         <tbody></tbody>
         <tfoot>
-          <tr>
-            <th colspan="2">Total</th>
+          <tr class="unspent">
+            <th colspan="2">Balance</th>
             <th><span class="balance_btc">0.00000000</span> BTC</th>
+          </tr>
+          <tr class="fees">
+            <th colspan="2">Fees</th>
+            <th><span class="fees_btc">0.00000000</span> BTC</th>
+          </tr>
+          <tr class="total">
+            <th colspan="2">Total to be sent</th>
+            <th><span class="total_btc">0.00000000</span> BTC</th>
           </tr>
         </tfoot>
       </table>

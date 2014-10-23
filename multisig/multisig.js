@@ -120,11 +120,13 @@
   /***
   Transaction builder */
   Multisig.Transaction = function(options) {
-    // Set a minimum miner fee.
-    if (options.minerFee && options.minerFee > Multisig.MINIMUM_MINER_FEE)
-      this.minerFee = options.minerFee;
-    else
+    // Set the miner fee.
+    if (options.minerFee) {
+      this.minerFee = parseFloat(options.minerFee) * Multisig.BITCOIN_SATOSHIS;
+    }
+    if (!this.minerFee || isNaN(this.minerFee)) {
       this.minerFee = Multisig.MINIMUM_MINER_FEE;
+    }
 
     // Set configuration.
     this.destinationAddress = options.destinationAddress;
@@ -137,6 +139,12 @@
     this.inputAddresses = [];
   }
   Multisig.Transaction.prototype = {
+    getMinerFee: function() {
+      return this.minerFee / Multisig.BITCOIN_SATOSHIS;
+    },
+    getDestinationAmount: function() {
+      return this.destinationAmount / Multisig.BITCOIN_SATOSHIS;
+    },
     build: function() {
       this.transaction = this.tb.build();
     },
@@ -214,6 +222,7 @@
     this.getUnspentOutputs();
   }
   Multisig.App.prototype = {
+    getMinimumFee: function() { return Multisig.MINIMUM_MINER_FEE / Multisig.BITCOIN_SATOSHIS; },
     setUnspentOutputsForAddress: function(address, unspent) {
       for (var x = 0; x < this.addresses.length; x++) {
         if (this.addresses[x].address == address) {
@@ -270,6 +279,7 @@
     buildTransaction: function(options) {
       this.tx = new Multisig.Transaction({
         addresses: this.addresses,
+        minerFee: options.minerFee,
         destinationAddress: options.destinationAddress,
         seeds: {
           user: options.seeds.user
