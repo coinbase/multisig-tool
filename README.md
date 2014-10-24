@@ -1,7 +1,7 @@
 Coinbase Vault recovery tool
 ============================
 
-You can use this open source tool to send all the coins from your Coinbase Multisig Vault to any address you choose.
+You can use this open source tool to send all the coins from your Coinbase Multisig Vault to any address you choose, contingent upon having the shared and user keys and password.
 
 All the data you need for this process is on the paper backup that you printed out or in the data that was offered for copy pasting when you created the vault.
 
@@ -42,7 +42,7 @@ We use the BIP38 library to decrypt the encrypted shared key seeds.
 
     `browserify -r bip38 -s Bip38 > multisig/bip38.js`
 
-Then we [ammend](https://github.com/coinbase/multisig-tool/commit/f8bbcb87ec50dc9414ca10e18c9fc0a8f4737322) the BIP38 library with progress callbacks and Web Worker messages handling.
+Then we [amend](https://github.com/coinbase/multisig-tool/commit/f8bbcb87ec50dc9414ca10e18c9fc0a8f4737322) the BIP38 library with progress callbacks and Web Worker messages handling.
 
 ## Offline use
 
