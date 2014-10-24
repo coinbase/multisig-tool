@@ -54,6 +54,8 @@ Everything else is either UI code or dependency libraries.
 
 ## Dependencies
 
+### BitcoinJS
+
 We use the [BitcoinJS](https://github.com/bitcoinjs/bitcoinjs-lib) library to handle HD wallets, Bitcoin keys, addresses and transactions.
 
 We used this command to build the [`lib/bitcoinjs.js`](https://github.com/coinbase/multisig-tool/blob/master/lib/bitcoinjs.js):
@@ -65,6 +67,8 @@ We used this command to build the [`lib/bitcoinjs.js`](https://github.com/coinba
 2. Use `browserify` to resolve dependencies:
 
     `browserify -r bitcoinjs-lib -r buffer > lib/bitcoinjs.js`
+
+### BIP38
 
 We use the [BIP38](https://github.com/cryptocoinjs/bip38) library to decrypt the encrypted shared key seeds.
 
