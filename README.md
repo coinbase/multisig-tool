@@ -5,6 +5,8 @@ You can use this open source tool to send all the coins from your Coinbase Multi
 
 In order to do this you will need the data from your vault backup that you either printed out or saved somewhere.
 
+http://coinbase.github.io/multisig-tool
+
 ## Usage
 
 ### Required input
