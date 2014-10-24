@@ -18,11 +18,11 @@ To complete this recovery process, you will need the following information:
 
 ### Online/Offline
 
-Internet connection is only required in *Step 1*, where you input the public keys, so that we can fetch the unspent outputs from your vault addresses.
+Internet connection is only required in **Step 1**, where you input the public keys, so that we can fetch the unspent outputs from your vault addresses.
 
-Before inputting your keys in *Step 2* and signing the transaction you can safely go _offline_.
+Before inputting your keys in **Step 2** and signing the transaction you can safely go _offline_.
 
-In *Step 3* you will get a signed transaction in raw hex form.
+In **Step 3** you will get a signed transaction in raw hex form.
 
 You can then copy this transaction and verify it with [Bitcoin Core](https://bitcoin.org/en/download) and `decoderawtransaction` or using an online tool like [Coinb.in](http://coinb.in/multisig/#verify).
 
