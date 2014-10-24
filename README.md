@@ -46,7 +46,7 @@ One alternative is to run Chrome with the `--allow-access-from-files` parameter.
 
 ## Development
 
-This tool was designed to have a minimal code foot print so it could be easily auditable by the security consicous.
+This tool was designed to have a minimal code foot print so it could be easily auditable by the security conscious.
 
 All the domain specific crypto is done in [`multisig.js`](https://github.com/coinbase/multisig-tool/blob/master/multisig/multisig.js).
 
