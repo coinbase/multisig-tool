@@ -38,7 +38,7 @@ You can download this tool and run it locally or use our hosted version at http:
 
 If you wish to run the tool locally, you need to do it through a local web server. This is because we use Web Workers for decrypting your BIP38 encrypted shared key seed, and Web Workers are not permitted to run through the `file:///` protocol.
 
-Protip: If you use Ruby, you can spin up a web server in the current directory with this one-liner:
+_Protip™_: If you use Ruby, you can spin up a web server in the current directory with this one-liner:
 
     gem install thin; ruby -rrack -e "include Rack; Handler::Thin.run Builder.new { run Directory.new '' }"
 
