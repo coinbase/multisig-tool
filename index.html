@@ -11,6 +11,9 @@
       "use strict";
 
       $(function() {
+        var cleanInput = function(str) {
+          return str.replace(/\W/g, '');
+        }
         var proceed = function(button, next_step_id) {
           $(button).parents('footer').hide();
           $(next_step_id).show();
@@ -27,7 +30,7 @@
         // Step 1, collect the xpubkeys, construct child addresses and fetch their unspent outputs.
         $('#step_1 button').on('click', function() {
           var lastAddressIndex = $('.max_index input').val();
-          var xpubkeys = $('.xpubkey').map(function(i, xpub) { return $(xpub).val(); }).toArray();
+          var xpubkeys = $('.xpubkey').map(function(i, xpub) { return cleanInput($(xpub).val()); }).toArray();
 
           // Make an address view.
           var addressView = new Multisig.AddressView({
@@ -57,9 +60,9 @@
             minerFee: $('.miner_fee').val(),
             destinationAddress: $('.destination_address input').val(),
             seeds: {
-              shared: $('.shared .key').val(),
+              shared: cleanInput($('.shared .key').val()),
               shared_password: $('.shared .password').val(),
-              user: $('.user .key').val()
+              user: cleanInput($('.user .key').val())
             },
             // BIP38 decryption progress method.
             onProgress: function(percent) {
