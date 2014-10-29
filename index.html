@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Coinbase Vault recovery tool</title>
+    <title>Coinbase Multisig Vault recovery tool</title>
     <link rel="stylesheet" href="css/multisig.css">
 
     <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
@@ -86,7 +86,7 @@
   </head>
   <body>
     <header>
-      <h1>Coinbase Vault recovery tool</h1>
+      <h1>Coinbase Multisig Vault recovery tool</h1>
       <small>
         <a href="https://github.com/coinbase/multisig-tool">Source code</a>
         |
@@ -125,14 +125,14 @@
         </header>
         <div class="seed shared">
           <label>
-            Shared key enc. seed
+            Shared encrypted seed
             <small class="decrypt_progress">Decrypting ... <strong><span id="decrypt_percent">0</span>%</strong></small>
           </label>
           <textarea class="key"></textarea>
           <input type="password" class="password" placeholder="Enter your vault password">
         </div>
         <div class="seed user">
-          <label>User key</label>
+          <label>User seed</label>
           <textarea class="key"></textarea>
         </div>
         <div class="destination_address">

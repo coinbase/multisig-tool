@@ -1,4 +1,4 @@
-Coinbase Vault recovery tool
+Coinbase Multisig Vault recovery tool
 ============================
 
 You can use this open source tool to send all the coins from your Coinbase Multisig Vault to any bitcoin address you choose.
@@ -14,8 +14,8 @@ http://coinbase.github.io/multisig-tool
 To complete this recovery process, you will need the following information:
 
 * 3 extended public keys (xpubkeys)
-* User key's seed or xprvkey
-* Shared key's encrypted seed
+* User seed
+* Shared encrypted seed
 * Your vault password
 
 ### Online/Offline
@@ -46,7 +46,7 @@ One alternative is to run Chrome with the `--allow-access-from-files` parameter.
 
 ## Development
 
-This tool was designed to have a minimal code foot print so it could be easily auditable by the security conscious.
+This tool was designed to have a minimal code foot print so it could be easily auditable.
 
 All the domain specific crypto is done in [`multisig.js`](https://github.com/coinbase/multisig-tool/blob/master/multisig/multisig.js).
 
