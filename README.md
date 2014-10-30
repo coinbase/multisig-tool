@@ -40,7 +40,7 @@ If you wish to run the tool locally, you need to do it through a local web serve
 
 _Protip™_: If you use Ruby, you can spin up a web server in the current directory with this one-liner:
 
-    gem install thin; ruby -rrack -e "include Rack; Handler::Thin.run Builder.new { run Directory.new '' }"
+   sudo gem install thin; ruby -rrack -e "include Rack; Handler::Thin.run Builder.new { run Directory.new '' }"
 
 One alternative is to run Chrome with the `--allow-access-from-files` parameter.
 
