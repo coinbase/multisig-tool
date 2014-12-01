@@ -13,6 +13,9 @@
     BITCOIN_SATOSHIS: 100000000
   };
 
+  Multisig.btcToSatoshis = function(btc) { return Math.floor(parseFloat(btc) * Multisig.BITCOIN_SATOSHIS); }
+  Multisig.satoshisToBtc = function(satoshis) { return (parseInt(satoshis) / Multisig.BITCOIN_SATOSHIS).toFixed(8); }
+
   /***
   Address view renderer */
   Multisig.AddressView = function(options) {
@@ -24,7 +27,7 @@
       return "address_balance_" + index;
     },
     addressRow: function(address) {
-      var balance = address.balance / Multisig.BITCOIN_SATOSHIS;
+      var balance = Multisig.satoshisToBtc(address.balance);
       var klass = ""
       if (address.balance == 0) { klass = "empty" }
       return "<tr id='"+ this.addressDomId(address.index) +"' class='"+ klass +"'><td><code>m/"+ address.index +"</code></td><td><code>"+ address.address +"</code></td><td>"+ balance +"</td></tr>";
@@ -35,7 +38,7 @@
     },
     render: function(multisig) {
       var that = this;
-      this.$container.find('.balance_btc').text(multisig.totalBalance / Multisig.BITCOIN_SATOSHIS);
+      this.$container.find('.balance_btc').text(Multisig.satoshisToBtc(multisig.totalBalance));
       $.each(multisig.addresses, function(i, a) { that.renderAddress(a) });
     }
   }
@@ -107,7 +110,7 @@
         return {
           hash: output.tx,
           index: output.n,
-          amount: (parseFloat(output.amount) * Multisig.BITCOIN_SATOSHIS),
+          amount: Multisig.btcToSatoshis(output.amount),
           script: Bitcoin.Script.fromHex(output.script)
         }
       });
@@ -122,7 +125,7 @@
   Multisig.Transaction = function(options) {
     // Set the miner fee.
     if (options.minerFee) {
-      this.minerFee = parseFloat(options.minerFee) * Multisig.BITCOIN_SATOSHIS;
+      this.minerFee = Multisig.btcToSatoshis(options.minerFee);
     }
     if (!this.minerFee || isNaN(this.minerFee)) {
       this.minerFee = Multisig.MINIMUM_MINER_FEE;
@@ -140,10 +143,10 @@
   }
   Multisig.Transaction.prototype = {
     getMinerFee: function() {
-      return this.minerFee / Multisig.BITCOIN_SATOSHIS;
+      return Multisig.satoshisToBtc(this.minerFee);
     },
     getDestinationAmount: function() {
-      return this.destinationAmount / Multisig.BITCOIN_SATOSHIS;
+      return Multisig.satoshisToBtc(this.destinationAmount);
     },
     build: function() {
       this.transaction = this.tb.build();
@@ -221,7 +224,7 @@
     this.getUnspentOutputs();
   }
   Multisig.App.prototype = {
-    getMinimumFee: function() { return Multisig.MINIMUM_MINER_FEE / Multisig.BITCOIN_SATOSHIS; },
+    getMinimumFee: function() { return Multisig.satoshisToBtc(Multisig.MINIMUM_MINER_FEE); },
     setUnspentOutputsForAddress: function(address, unspent) {
       for (var x = 0; x < this.addresses.length; x++) {
         if (this.addresses[x].address == address) {
