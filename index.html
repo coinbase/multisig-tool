@@ -19,6 +19,30 @@
           $(next_step_id).show();
         }
 
+        // Parse query string and prepopulate.
+        var query = window.location.search.substring(1);
+        if (query) {
+          var key_to_element = {
+            'xpubkey1':            '#xpubkey1',
+            'xpubkey2':            '#xpubkey2',
+            'xpubkey3':            '#xpubkey3',
+            'max_index':           '#max_index',
+            'shared_seed':         '#shared_seed',
+            'user_seed':           '#user_seed',
+            'destination_address': '#destination_address'
+          };
+          var vars = query.split('&');
+          for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split('=');
+            var key = decodeURIComponent(pair[0]);
+            var value = decodeURIComponent(pair[1]);
+            if (!value) continue;
+
+            // Look up the element from the key_to_element table and prefill it with the value.
+            $(key_to_element[key]).val(value);
+          }
+        }
+
         // Hide all the steps, then only show step 1.
         $('.step').hide();
         $('#step_1').show();
@@ -101,13 +125,13 @@
         </header>
         <div class="xpubkeys">
           <p>Please enter the extended public keys (xpubkeys) for your multisig vault.</p>
-          <textarea class="xpubkey key" placeholder="xpub..."></textarea>
-          <textarea class="xpubkey key" placeholder="xpub..."></textarea>
-          <textarea class="xpubkey key" placeholder="xpub..."></textarea>
+          <textarea id="xpubkey1" class="xpubkey key" placeholder="xpub..."></textarea>
+          <textarea id="xpubkey2" class="xpubkey key" placeholder="xpub..."></textarea>
+          <textarea id="xpubkey3" class="xpubkey key" placeholder="xpub..."></textarea>
         </div>
         <div class="max_index">
           <p>Please enter the highest HD index to check for balance.</p>
-          <input type="number" placeholder="index" value="10">
+          <input id="max_index" type="number" placeholder="index" value="10">
         </div>
         <footer>
           <button>Continue</button>
@@ -128,16 +152,16 @@
             Shared encrypted seed
             <small class="decrypt_progress">Decrypting ... <strong><span id="decrypt_percent">0</span>%</strong></small>
           </label>
-          <textarea class="key"></textarea>
+          <textarea id="shared_seed" class="key"></textarea>
           <input type="password" class="password" placeholder="Enter your vault password">
         </div>
         <div class="seed user">
           <label>User seed</label>
-          <textarea class="key"></textarea>
+          <textarea id="user_seed" class="key"></textarea>
         </div>
         <div class="destination_address">
           <label>And decide where you want the bitcoins to be sent to</label>
-          <input type="text" class="key" placeholder="Enter a bitcoin address">
+          <input id="destination_address" type="text" class="key" placeholder="Enter a bitcoin address">
         </div>
         <div class="fees">
           <label>What would you like the fee to be</label>
