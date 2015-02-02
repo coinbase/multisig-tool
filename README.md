@@ -48,7 +48,11 @@ One alternative is to run Chrome with the `--allow-access-from-files` parameter.
 
 This tool was designed to have a minimal code foot print so it could be easily auditable.
 
-All the domain specific crypto is done in [`multisig.js`](https://github.com/coinbase/multisig-tool/blob/master/multisig/multisig.js).
+All the domain specific crypto is done in the various files in [`lib/multisig`](https://github.com/coinbase/multisig-tool/tree/master/lib/multisig).
+
+These files are compiled using [Browserify](http://browserify.org/) into [`multisig.js`](https://github.com/coinbase/multisig-tool/blob/master/multisig.js) with:
+
+    cd lib/multisig; browserify -r ./vault -r ./views/addresses_view > ../../multisig.js
 
 Everything else is either UI code or dependency libraries.
 
@@ -58,21 +62,11 @@ Everything else is either UI code or dependency libraries.
 
 We use the [BitcoinJS](https://github.com/bitcoinjs/bitcoinjs-lib) library to handle HD wallets, Bitcoin keys, addresses and transactions.
 
-We used this command to build the [`lib/bitcoinjs.js`](https://github.com/coinbase/multisig-tool/blob/master/lib/bitcoinjs.js):
-
-1. Install packages with `npm`:
-
-    `npm install bitcoinjs-lib --save`
-
-2. Use `browserify` to resolve dependencies:
-
-    `browserify -r bitcoinjs-lib -r buffer > lib/bitcoinjs.js`
-
 ### BIP38
 
 We use the [BIP38](https://github.com/cryptocoinjs/bip38) library to decrypt the encrypted shared key seeds.
 
-To build the [`multisig/bip38.js`](https://github.com/coinbase/multisig-tool/blob/master/multisig/bip38.js) we used:
+To build the [`multisig/bip38.js`](https://github.com/coinbase/multisig-tool/blob/master/lib/multisig/bip38.js) we used:
 
 1. Install packages with `npm`:
 
@@ -80,16 +74,16 @@ To build the [`multisig/bip38.js`](https://github.com/coinbase/multisig-tool/blo
 
 2. Use `browserify` to resolve dependencies:
 
-    `browserify -r bip38 -s Bip38 > multisig/bip38.js`
+    `browserify -r bip38 -s Bip38 > lib/multisig/bip38.js`
 
-Then we [amend](https://github.com/coinbase/multisig-tool/commit/f8bbcb87ec50dc9414ca10e18c9fc0a8f4737322) the `multisig/bip38.js` to support progress callbacks and Web Worker messages handling.
+Then we [amend](https://github.com/coinbase/multisig-tool/commit/f8bbcb87ec50dc9414ca10e18c9fc0a8f4737322) the `lib/multisig/bip38.js` to support progress callbacks and Web Worker messages handling.
+
+We need this as a separate file, because we're using it with web workers.
 
 ## Improvements missing
 
 1. There is currently no error checking whatsoever. That means the tool won't let you know if something is wrong with your input or with anything else. It will just silently stop working.
 
-2. There is also currently no support for **group vaults**. 
-
-3. At the moment if your highest HD index is more than 12, it won't be able to fetch the unspent outputs, because of API limitations.
+2. There is also currently no support for **group vaults**.
 
 We plan to tackle those issues soon, but we do accept community contributions as well. So if you have a solution for some of these, please submit a pull request!

@@ -4,9 +4,8 @@
     <title>Coinbase Multisig Vault recovery tool</title>
     <link rel="stylesheet" href="css/multisig.css">
 
-    <script type="text/javascript" src="lib/jquery-2.1.1.min.js"></script>
-    <script type="text/javascript" src="lib/bitcoinjs.js"></script>
-    <script type="text/javascript" src="multisig/multisig.js"></script>
+    <script type="text/javascript" src="lib/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="multisig.js"></script>
     <script type="text/javascript">
       "use strict";
 
@@ -18,6 +17,15 @@
           $(button).parents('footer').hide();
           $(next_step_id).show();
         }
+
+
+        // Load modules.
+        var AddressesView = require('./views/addresses_view');
+        var Vault = require('./vault');
+
+        // Replace the addresses table body with the addresses view.
+        var addressesView = new AddressesView();
+        $('#addresses').find('tbody').replaceWith(addressesView.render().$el);
 
         // Parse query string and prepopulate.
         var query = window.location.search.substring(1);
@@ -51,28 +59,26 @@
           $(this).attr('disabled', true).text('Please wait ...')
         });
 
+        // Define the vault variable outside of the click handler functions.
+        var vault;
+
         // Step 1, collect the xpubkeys, construct child addresses and fetch their unspent outputs.
         $('#step_1 button').on('click', function() {
           var lastAddressIndex = $('.max_index input').val();
           var xpubkeys = $('.xpubkey').map(function(i, xpub) { return cleanInput($(xpub).val()); }).toArray();
 
-          // Make an address view.
-          var addressView = new Multisig.AddressView({
-            container: '#transaction'
-          });
-
-          var button = this;
-          Multisig.app = new Multisig.App({
+          // Build up the main Vault object.
+          vault = new Vault({
             xpubkeys: xpubkeys,
             lastAddressIndex: parseInt(lastAddressIndex),
-            onReady: function() {
-              addressView.render(this); // When multisig ready, render the address view.
-              proceed(button, '#step_2');
-            }
+            view: addressesView
           });
+          vault.initialize().done(function() {
+            proceed(this, '#step_2');
+          }.bind(this));
 
           // Set the default fees.
-          $('.miner_fee').val(Multisig.app.getMinimumFee());
+          $('.miner_fee').val(vault.getMinimumFee());
         })
 
         // Step 2, collect the shared and user key, decrypt shared key, build transaction and sign it.
@@ -80,7 +86,7 @@
           var button = this;
           var percent = 0;
 
-          Multisig.app.buildTransaction({
+          vault.buildTransaction({
             minerFee: $('.miner_fee').val(),
             destinationAddress: $('.destination_address input').val(),
             seeds: {
@@ -98,9 +104,9 @@
               $('#decrypt_percent').text(percent);
             },
             onReady: function() {
-              $('.fees_btc').text(Multisig.app.tx.getMinerFee());
-              $('.total_btc').text(Multisig.app.tx.getDestinationAmount());
-              $('.raw code').text(Multisig.app.tx.transaction.toHex());
+              $('.fees_btc').text(vault.tx.getMinerFee());
+              $('.total_btc').text(vault.tx.getDestinationAmount());
+              $('.raw code').text(vault.tx.transaction.toHex());
               proceed(button, '#step_3');
             }
           })
@@ -185,7 +191,7 @@
       </div>
     </div>
     <div id="transaction">
-      <table>
+      <table id="addresses">
         <thead>
           <tr>
             <th>Node path</th>
