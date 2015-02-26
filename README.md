@@ -54,7 +54,7 @@ These files are compiled using [Browserify](http://browserify.org/) into [`multi
 
     make compile
 
-Everything else is either UI code or dependency libraries.
+Everything else is either [UI code](https://github.com/coinbase/multisig-tool/blob/master/lib/tool.js) or dependency libraries.
 
 ## Dependencies
 
