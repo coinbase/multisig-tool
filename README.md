@@ -36,13 +36,13 @@ You can download this tool and run it locally or use our hosted version at http:
 
 #### Running locally
 
-If you wish to run the tool locally, you need to do it through a local web server. This is because we use Web Workers for decrypting your BIP38 encrypted shared key seed, and Web Workers are not permitted to run through the `file:///` protocol.
+If you wish to run the tool locally, you need to do it through a local web server. The easiest way to do that is by running:
 
-_Protip™_: If you use Ruby, you can spin up a web server in the current directory with this one-liner:
+    make run
 
-    gem install thin; ruby -rrack -e "include Rack; Handler::Thin.run Builder.new { run Directory.new '' }"
+This is because we use Web Workers for decrypting your BIP38 encrypted shared key seed, and Web Workers are not permitted to run through the `file:///` protocol.
 
-One alternative is to run Chrome with the `--allow-access-from-files` parameter.
+Another alternative is to run Chrome with the `--allow-access-from-files` parameter.
 
 ## Development
 
@@ -52,7 +52,7 @@ All the domain specific crypto is done in the various files in [`lib/multisig`](
 
 These files are compiled using [Browserify](http://browserify.org/) into [`multisig.js`](https://github.com/coinbase/multisig-tool/blob/master/multisig.js) with:
 
-    cd lib/multisig; browserify -r ./vault -r ./views/addresses_view > ../../multisig.js
+    make compile
 
 Everything else is either UI code or dependency libraries.
 
