@@ -8,11 +8,11 @@ compile:
 
 publish:
 	git checkout gh-pages
-	git merge master
+	git rebase master
 	make compile
 	git add multisig.js
 	git commit -m "Publishing ..."
-	git push --set-upstream origin gh-pages
+	git push --set-upstream origin gh-pages -f
 	git checkout master
 
 .PHONY: run compile publish
