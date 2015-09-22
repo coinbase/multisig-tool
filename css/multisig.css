@@ -82,10 +82,20 @@ textarea, input[type="text"], input[type="number"], input[type="password"] {
 #transaction tr.empty td {
   color: #ccc;
 }
-
-.xpubkeys textarea {
+.xpubkeys .xpubkey_container {
   width: 31%;
+  float: left;
+  margin-right: 2%;
+}
+.xpubkeys textarea {
   height: 60px;
+  width: 98%;
+}
+.xpubkeys br.clear {
+  clear: both;
+}
+.compressed_notice {
+  font-size: 10px;
 }
 .max_index input {
   width: 50px;
