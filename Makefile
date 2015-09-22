@@ -7,9 +7,9 @@ compile:
 
 publish:
 	git checkout gh-pages
-	git rebase master
+	git reset --hard origin/master
 	make compile
-	git add multisig.js
+	git add -f multisig.js
 	git commit -m "Publishing ..."
 	git push --set-upstream origin gh-pages -f
 	git checkout master
