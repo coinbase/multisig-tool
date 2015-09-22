@@ -83,6 +83,16 @@ textarea, input[type="text"], input[type="number"], input[type="password"] {
   color: #ccc;
 }
 
+.xpubkey_header {
+  width: 33%;
+  float: left;
+  text-align: center;
+}
+.xpubkey_footer {
+  width: 33%;
+  float: left;
+  margin-bottom: 10px;
+}
 .xpubkeys textarea {
   width: 31%;
   height: 60px;
