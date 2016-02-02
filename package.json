@@ -1,0 +1,23 @@
+{
+  "name": "multisig-tool",
+  "version": "1.0.0",
+  "description": "Open source tool for withdrawing from a Coinbase individual multisig vault",
+  "main": "multisig.js",
+  "dependencies": {
+    "bitcoinjs-lib": "~1.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coinbase/multisig-tool.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/coinbase/multisig-tool/issues"
+  },
+  "homepage": "https://github.com/coinbase/multisig-tool#readme"
+}
