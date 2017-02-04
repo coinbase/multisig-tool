@@ -1,7 +1,12 @@
-run:
+run: compile
 	python -m SimpleHTTPServer
 
-compile:
+compile: multisig.js
+
+clean:
+	rm -f multisig.js
+
+multisig.js: lib/multisig/vault.js lib/multisig/views/addresses_view.js
 	cd lib/multisig && \
 	../../node_modules/.bin/browserify -r ./vault -r ./views/addresses_view > ../../multisig.js
 
