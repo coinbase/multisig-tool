@@ -3,7 +3,7 @@ run:
 
 compile:
 	cd lib/multisig && \
-	browserify -r ./vault -r ./views/addresses_view > ../../multisig.js
+	../../node_modules/.bin/browserify -r ./vault -r ./views/addresses_view > ../../multisig.js
 
 publish:
 	git checkout gh-pages

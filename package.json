@@ -6,7 +6,9 @@
   "dependencies": {
     "bitcoinjs-lib": "~1.5"
   },
-  "devDependencies": {},
+  "devDependencies": {
+    "browserify": "^14.0.0"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
