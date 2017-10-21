@@ -4,7 +4,7 @@
   "description": "Open source tool for withdrawing from a Coinbase individual multisig vault",
   "main": "multisig.js",
   "dependencies": {
-    "bitcoinjs-lib": "~1.5"
+    "bitcoinjs-lib": "~3.2.1"
   },
   "devDependencies": {},
   "scripts": {
