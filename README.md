@@ -1,6 +1,14 @@
 Coinbase Multisig Vault recovery tool
 ============================
 
+## IMPORTANT: Do not use this tool after the [Segwit2x Fork](https://support.coinbase.com/customer/portal/articles/2892985-segwit-2x-faq), which is projected to happen on November 16.
+
+Transactions from this tool will not use Coinbase's replay protection system and thus vulnerable to replay attacks.
+
+Learn more by reading our[FAQ](https://support.coinbase.com/customer/en/portal/articles/2892985-bitcoin-segwit2x-fork-faq?b_id=13521)
+
+============================
+
 You can use this open source tool to send all the coins from your Coinbase Multisig Vault to any bitcoin address you choose.
 
 In order to do this you will need the data from your vault backup that you either printed out or saved somewhere.
