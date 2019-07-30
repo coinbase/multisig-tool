@@ -82,6 +82,9 @@ textarea, input[type="text"], input[type="number"], input[type="password"] {
 #transaction tr.empty td {
   color: #ccc;
 }
+#transaction tr.error td {
+  color: #ff0000;
+}
 .xpubkeys .xpubkey_container {
   width: 31%;
   float: left;
