@@ -5,7 +5,7 @@ You can use this open source tool to send all the coins from your Coinbase Multi
 
 In order to do this you will need the data from your vault backup that you either printed out or saved somewhere.
 
-http://coinbase.github.io/multisig-tool
+https://coinbase.github.io/multisig-tool
 
 ## Usage
 
@@ -26,13 +26,13 @@ Before inputting your keys in **Step 2** and signing the transaction you can saf
 
 In **Step 3** you will get a signed transaction in raw hex form.
 
-You can then copy this transaction and verify it with [Bitcoin Core](https://bitcoin.org/en/download) and `decoderawtransaction` or using an online tool like [Coinb.in](http://coinb.in/multisig/#verify).
+You can then copy this transaction and verify it with [Bitcoin Core](https://bitcoin.org/en/download) and `decoderawtransaction` or using an online tool like [Coinb.in](https://coinb.in/multisig/#verify).
 
 After verifying you then broadcast it using [Bitcoin Core](https://bitcoin.org/en/download) and `sendrawtransaction` or any other API or client that supports broadcasting transactions into the Bitcoin network.
 
 ### Running
 
-You can download this tool and run it locally or use our hosted version at http://coinbase.github.io/multisig-tool.
+You can download this tool and run it locally or use our hosted version at https://coinbase.github.io/multisig-tool.
 
 #### Running locally
 
