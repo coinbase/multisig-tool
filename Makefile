@@ -1,9 +1,12 @@
-run:
+run: compile
 	python -m SimpleHTTPServer
+
+clean:
+	rm -f multisig.js
 
 compile:
 	cd lib/multisig && \
-	browserify -r ./vault -r ./views/addresses_view > ../../multisig.js
+	../../node_modules/.bin/browserify -r ./vault -r ./views/addresses_view > ../../multisig.js
 
 publish:
 	git checkout gh-pages
@@ -14,4 +17,4 @@ publish:
 	git push --set-upstream origin gh-pages -f
 	git checkout master
 
-.PHONY: run compile publish
+.PHONY: run compile publish clean
