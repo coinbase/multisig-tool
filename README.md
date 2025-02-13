@@ -1,26 +1,26 @@
-Coinbase Multisig Vault recovery tool
+Coinbase Multisig Vault recovery tool (DEPRECATED)
 ============================
 
-You can use this open source tool to send all the coins from your Coinbase Multisig Vault to any bitcoin address you choose.
+THIS TOOL HAS BEEN DEPRECATED, IT IS UNMAINTAINED AND IS PROVIDED AS-IS, SOLELY FOR INFORMATIONAL AND HISTORICAL PURPOSES.
 
-In order to do this you will need the data from your vault backup that you either printed out or saved somewhere.
+This open source tool was created to assist Coinbase Multisig Vault users with recovery of their self-custodial backup keys. The following is a historical description of how the tool worked. If you modify, compile, or otherwise use the tool or its underlying code, you agree that you are doing so solely at your own risk. Coinbase has no access to any Multisig keys associated with Multisig Vault, and cannot assist with key or asset recovery.
 
-https://coinbase.github.io/multisig-tool
+---------------------------------------
 
 ## Usage
 
 ### Required input
 
-To complete this recovery process, you will need the following information:
+To complete the recovery process, you will need the following information:
 
 * 3 extended public keys (xpubkeys)
 * User seed
 * Shared encrypted seed
-* Your vault password
+* Your vault password (it is strongly recommended that you never share your password with a third-party controlled or online instance).
 
 ### Online/Offline
 
-Internet connection is only required in **Step 1**, where you input the public keys, so that we can fetch the unspent outputs from your vault addresses.
+Internet connection is only required in **Step 1**, where you input the public keys, so the tool can fetch the unspent outputs from your vault addresses.
 
 Before inputting your keys in **Step 2** and signing the transaction you can safely go _offline_.
 
@@ -32,15 +32,11 @@ After verifying you then broadcast it using [Bitcoin Core](https://bitcoin.org/e
 
 ### Running
 
-You can download this tool and run it locally or use our hosted version at https://coinbase.github.io/multisig-tool.
-
-#### Running locally
-
-If you wish to run the tool locally, you need to do it through a local web server. The easiest way to do that is by running:
+Download this tool and run it locally. You will need to do it through a local web server. The easiest way to do that is by running:
 
     make run
 
-This is because we use Web Workers for decrypting your BIP38 encrypted shared key seed, and Web Workers are not permitted to run through the `file:///` protocol.
+The tool uses Web Workers for decrypting your BIP38 encrypted shared key seed, and Web Workers are not permitted to run through the `file:///` protocol.
 
 Another alternative is to run Chrome with the `--allow-access-from-files` parameter.
 
@@ -60,13 +56,13 @@ Everything else is either [UI code](https://github.com/coinbase/multisig-tool/bl
 
 ### BitcoinJS
 
-We use the [BitcoinJS](https://github.com/bitcoinjs/bitcoinjs-lib) library to handle HD wallets, Bitcoin keys, addresses and transactions.
+The [BitcoinJS](https://github.com/bitcoinjs/bitcoinjs-lib) library is used to handle HD wallets, Bitcoin keys, addresses and transactions.
 
 ### BIP38
 
-We use the [BIP38](https://github.com/cryptocoinjs/bip38) library to decrypt the encrypted shared key seeds.
+The [BIP38](https://github.com/cryptocoinjs/bip38) library is used to decrypt the encrypted shared key seeds.
 
-To build the [`multisig/bip38.js`](https://github.com/coinbase/multisig-tool/blob/master/lib/multisig/bip38.js) we used:
+To build the [`multisig/bip38.js`](https://github.com/coinbase/multisig-tool/blob/master/lib/multisig/bip38.js), the following are used:
 
 1. Install packages with `npm`:
 
@@ -76,14 +72,12 @@ To build the [`multisig/bip38.js`](https://github.com/coinbase/multisig-tool/blo
 
     `browserify -r bip38 -s Bip38 > lib/multisig/bip38.js`
 
-Then we [amend](https://github.com/coinbase/multisig-tool/commit/f8bbcb87ec50dc9414ca10e18c9fc0a8f4737322) the `lib/multisig/bip38.js` to support progress callbacks and Web Worker messages handling.
+Then [amend](https://github.com/coinbase/multisig-tool/commit/f8bbcb87ec50dc9414ca10e18c9fc0a8f4737322) is used on `lib/multisig/bip38.js` to support progress callbacks and Web Worker messages handling.
 
-We need this as a separate file, because we're using it with web workers.
+This must be a separate file, as it is used with with Web Workers.
 
-## Improvements missing
+## Caveats
 
-1. There is currently no error checking whatsoever. That means the tool won't let you know if something is wrong with your input or with anything else. It will just silently stop working.
+1. There is no error checking whatsoever. That means the tool won't let you know if something is wrong with your input or with anything else. It will just silently stop working.
 
-2. There is also currently no support for **group vaults**.
-
-We plan to tackle those issues soon, but we do accept community contributions as well. So if you have a solution for some of these, please submit a pull request!
+2. There is also no support for **group vaults**.
